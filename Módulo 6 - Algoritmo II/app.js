@@ -121,3 +121,36 @@ var decryptMessage = (encryptedMessage, reversedPlainAlphabet, reversedEncrypted
 
 var decryptedMessage = decryptMessage(encryptedMessage, reversedPlainAlphabet, reversedEncryptedAlphabet);
 console.log("Mensaje desencriptado:", decryptedMessage);
+
+//* GENERADOR ALEATORIO
+
+var randomPick = (n, min, max) => {
+  if (n > (max - min + 1)) {
+    console.log("No se pueden generar más números únicos que los disponibles en el rango");
+    return [];
+  }
+
+  var numbers = []; //para almacenar los números aleatorios generados.
+  var range = []; //contiene todos los números posibles dentro del rango especificado. 
+
+  // Crear un array con todos los números posibles dentro del rango
+
+  for (var i = min; i <= max; i++) {
+    range.push(i);
+  }
+
+  // Generar números aleatorios sin repetición
+
+  for (var j = 0; j < n; j++) {
+    var randomIndex = Math.floor(Math.random() * range.length);
+    var number = range.splice(randomIndex, 1)[0];
+    numbers.push(number);
+  }
+
+  return numbers;
+}
+
+// Ejemplo 
+
+var result = randomPick(10, 1, 100);
+console.log(result);
