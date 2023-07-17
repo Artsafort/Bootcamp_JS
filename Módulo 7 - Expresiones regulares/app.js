@@ -92,7 +92,7 @@ function extraerPartesMatricula(matricula) {
     numerica: parteNumerica,
     letras: parteLetras
   };
-}
+};
 
 // Iterar sobre las matrículas y extraer las partes numérica y de letras
 for (var i = 0; i < matriculas.length; i++) {
@@ -106,4 +106,73 @@ for (var i = 0; i < matriculas.length; i++) {
   console.log("Parte numérica: " + partes.numerica);
   console.log("Parte de letras: " + partes.letras);
   console.log("-----------------------");
+}
+
+// ****************************************
+
+//* VALIDAR SINTAXIS TARJETA DE CRÉDITO. 
+
+const cardNumbers = [
+  "5299 6400 0000 0000",
+  "5299-6400-0000-0000",
+  "5299640000000000"
+];
+
+function validarTarjetaMastercard(numeroTarjeta) {
+  const regex = /^(50|51|52|53|54|55)[0-9]{2}(\s|-)?[0-9]{4}(\s|-)?[0-9]{4}(\s|-)?[0-9]{4}$/;
+  return regex.test(numeroTarjeta);
+}
+
+console.log("Resultados de validación:");
+for (const numeroTarjeta of cardNumbers) {
+  const esValida = validarTarjetaMastercard(numeroTarjeta);
+  console.log(numeroTarjeta + ": " + (esValida ? "Válida" : "Inválida"));
+};
+
+//* BUSCAR EXPRESIONES REGULARES. 
+
+// Expresiones regulares a buscar y validar.
+
+const expresionesRegulares = [
+  {
+    nombre: "Comprobar clave fuerte",
+    regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]+$/,
+    ejemplos: ["Abcd123!", "password123", "ABCD1234", "12345678!"],
+  },
+  {
+    nombre: "Comprobar clave moderada",
+    regex: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
+    ejemplos: ["Abcd1234", "Password", "abcd123", "12345678"],
+  },
+  {
+    nombre: "Validar URL bien formada",
+    regex: /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(\/[\w.-]*)*\/?$/,
+    ejemplos: [
+      "https://www.lemoncode.net",
+      "www.lemoncode.net",
+      "lemoncode.net",
+      "https://www.lemoncode.net/articles",
+    ],
+  },
+  {
+    nombre: "Validar color hexadecimal",
+    regex: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
+    ejemplos: ["#FF0000", "#00ff00", "#0000FF", "#123abc", "#fff", "#1234YZ"],
+  },
+];
+
+// Función para validar una expresión regular y sus ejemplos
+function validarExpresionRegular(expresionRegular) {
+  console.log("Expresión regular: " + expresionRegular.nombre);
+  console.log("------------------------------------------");
+  for (const ejemplo of expresionRegular.ejemplos) {
+    const esValido = expresionRegular.regex.test(ejemplo);
+    console.log(ejemplo + ": " + (esValido ? "Válido" : "Inválido"));
+  }
+  console.log("\n");
+}
+
+// Validar todas las expresiones regulares
+for (const expresionRegular of expresionesRegulares) {
+  validarExpresionRegular(expresionRegular);
 }
