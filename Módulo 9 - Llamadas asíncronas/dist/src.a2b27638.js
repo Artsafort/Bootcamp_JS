@@ -5492,7 +5492,7 @@ var _axios = _interopRequireDefault(require("axios"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function getCharacters() {
   return _axios.default.get("https://rickandmortyapi.com/api/character/").then(function (response) {
-    return response.data.results; // Seleccionamos solo los resultados que contienen los personajes
+    return response.data.results; // Seleccionamos solo los resultados que contienen los personajes.
   });
 }
 
@@ -5503,13 +5503,11 @@ function getCharacterById(id) {
 }
 function getEpisodes() {
   return _axios.default.get("https://rickandmortyapi.com/api/episode/").then(function (response) {
-    console.log(response);
     return response.data.results;
   });
 }
 function getEpisodeById(id) {
   return _axios.default.get("https://rickandmortyapi.com/api/episode/".concat(id)).then(function (response) {
-    console.log(response);
     return response.data;
   });
 }
@@ -5520,6 +5518,7 @@ function getLocations() {
 }
 function getLocationById(id) {
   return _axios.default.get("https://rickandmortyapi.com/api/location/".concat(id)).then(function (response) {
+    console.log(response.data);
     return response.data;
   });
 }
@@ -5529,7 +5528,7 @@ function getLocationById(id) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.showCharacter = exports.createLocationElement = exports.createEpisodeElement = exports.createCharacterRow = void 0;
+exports.showCharacter = exports.createCharacterRow = void 0;
 var createCharacterRow = function createCharacterRow(character) {
   var element = document.createElement("div");
   var avatar = createAvatar(character);
@@ -5559,15 +5558,14 @@ var createAvatarDetail = function createAvatarDetail(character) {
   return element;
 };
 var showCharacter = function showCharacter(character) {
-  console.log("character", character);
   var characterDetail = document.getElementById("character-detail");
   characterDetail.innerHTML = "";
   characterDetail.appendChild(createAvatarDetail(character));
   characterDetail.appendChild(createParagraph("Name: " + character.name));
   characterDetail.appendChild(createParagraph("Status: " + character.status));
   characterDetail.appendChild(createParagraph("Species: " + character.species));
-  // characterDetail.appendChild(createParagraph("Episode: " + character.episode));
-  // characterDetail.appendChild(createParagraph("Location: " + character.location));
+  characterDetail.appendChild(createParagraph("Location: " + character.location.name));
+  characterDetail.appendChild(createParagraph("Episode(s): " + character.episodeName));
 };
 exports.showCharacter = showCharacter;
 var createParagraph = function createParagraph(text) {
@@ -5575,33 +5573,20 @@ var createParagraph = function createParagraph(text) {
   element.append(text);
   return element;
 };
-var createEpisodeElement = function createEpisodeElement(episode) {
-  var element = document.createElement("div");
-  element.className = "episodes";
-  element.innerHTML = "\n      <h3>".concat(episode.name, "</h3>\n      <p><strong>Episode:</strong> ").concat(episode.episode, "</p>\n      <p><strong>Air Date:</strong> ").concat(episode.air_date, "</p>\n    ");
-  return element;
-};
-exports.createEpisodeElement = createEpisodeElement;
-var createLocationElement = function createLocationElement(location) {
-  var element = document.createElement("div");
-  element.className = "locations";
-  element.innerHTML = "\n      <h3>".concat(location.name, "</h3>\n      <p><strong>Type:</strong> ").concat(location.type, "</p>\n      <p><strong>Dimension:</strong> ").concat(location.dimension, "</p>\n    ");
-  return element;
-};
-exports.createLocationElement = createLocationElement;
 },{}],"src/index.js":[function(require,module,exports) {
 "use strict";
 
 require("./styles.css");
 var DataBusiness = _interopRequireWildcard(require("./data-business.js"));
 var Utils = _interopRequireWildcard(require("./utils.js"));
+var _axios = _interopRequireDefault(require("axios"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-// Obtener y mostrar listado de personajes
-
+// Obtener y mostrar listado de personajes:
 DataBusiness.getCharacters().then(function (datos) {
   var nodes = [];
   var _iterator = _createForOfIteratorHelper(datos),
@@ -5611,8 +5596,31 @@ DataBusiness.getCharacters().then(function (datos) {
       var characterCount = _step.value;
       var node = Utils.createCharacterRow(characterCount);
       node.onclick = function () {
+        // Se obtienen los datos del personaje: 
         DataBusiness.getCharacterById(characterCount.id).then(function (characterData) {
-          Utils.showCharacter(characterData);
+          // Como puede tener uno o varios episodios, se recorre el array de episodes, y se llama a la API 
+          // axios.get(episodeUrl) con cada uno de ellos para obtener su nombre.
+          // Pero, solo se mostrará el resultado por pantalla cuando se consigan los nombres de TODOS los episodios.
+
+          var calls = []; // Aquí se guardarán las promesas para obtener el nombre de los episodios.
+          var episodes = []; // Aquí se guardarán los nombres de los episodios cuando las promesas se hayan resuelto.
+          characterData.episode.forEach(function (episodeUrl) {
+            calls.push(_axios.default.get(episodeUrl).then(function (response) {
+              // A continuación, esta promesa se ha resuelto, y, por tanto, se guarda el nombre en el array episodes.
+              episodes.push(response.data.name + " ");
+            }));
+          });
+
+          // Se utiliza Promise.all para agrupar todas las promesas del array: calls;
+          // y, que el código que esta en .then() se ejecute solamente cuando todas las promesas se hayan resuelto.
+
+          Promise.all(calls).then(function () {
+            // Este código solamente se ejecutará cuando todos los axios.get(episodeUrl) 
+            // guardados en el array: calls (linea 25) se resuelvan. Es decir, que la API nos devuelva el resultado.
+            characterData.episodeName = episodes;
+            // Solo aquí estamos seguros de que tenemos todos los datos disponibles para mostrarlos en pantalla.
+            Utils.showCharacter(characterData);
+          });
         });
       };
       nodes.push(node);
@@ -5630,45 +5638,7 @@ DataBusiness.getCharacters().then(function (datos) {
     rootElement.appendChild(node);
   });
 });
-
-// Obtener y mostrar listado de episodios
-
-DataBusiness.getEpisodes().then(function (episodes) {
-  var episodesElement = document.getElementById("episodes");
-  var _iterator2 = _createForOfIteratorHelper(episodes),
-    _step2;
-  try {
-    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-      var episode = _step2.value;
-      var episodeNode = Utils.createEpisodeElement(episode);
-      episodesElement.appendChild(episodeNode);
-    }
-  } catch (err) {
-    _iterator2.e(err);
-  } finally {
-    _iterator2.f();
-  }
-});
-
-// Obtener y mostrar listado de localizaciones
-
-DataBusiness.getLocations().then(function (locations) {
-  var locationsElement = document.getElementById("locations");
-  var _iterator3 = _createForOfIteratorHelper(locations),
-    _step3;
-  try {
-    for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-      var location = _step3.value;
-      var locationNode = Utils.createLocationElement(location);
-      locationsElement.appendChild(locationNode);
-    }
-  } catch (err) {
-    _iterator3.e(err);
-  } finally {
-    _iterator3.f();
-  }
-});
-},{"./styles.css":"src/styles.css","./data-business.js":"src/data-business.js","./utils.js":"src/utils.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./styles.css":"src/styles.css","./data-business.js":"src/data-business.js","./utils.js":"src/utils.js","axios":"node_modules/axios/index.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -5693,7 +5663,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62326" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53286" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

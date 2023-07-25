@@ -4,7 +4,7 @@ function getCharacters() {
   return axios
     .get("https://rickandmortyapi.com/api/character/")
     .then(response => {
-      return response.data.results; // Seleccionamos solo los resultados que contienen los personajes
+      return response.data.results; // Seleccionamos solo los resultados que contienen los personajes.
     });
 }
 
@@ -20,7 +20,6 @@ function getEpisodes() {
   return axios
     .get("https://rickandmortyapi.com/api/episode/")
     .then(response => {
-        console.log(response);
       return response.data.results;
     });
 }
@@ -29,7 +28,6 @@ function getEpisodeById(id) {
   return axios
     .get(`https://rickandmortyapi.com/api/episode/${id}`)
     .then(response => {
-        console.log(response);
       return response.data;
     });
 }
@@ -46,6 +44,7 @@ function getLocationById(id) {
   return axios
     .get(`https://rickandmortyapi.com/api/location/${id}`)
     .then(response => {
+      console.log(response.data);
       return response.data;
     });
 }

@@ -28,18 +28,17 @@ const createCharacterRow = (character) => {
     element.src = character.image;
     return element;
   };
-  
+
   const showCharacter = (character) => {
-    console.log("character", character);
     const characterDetail = document.getElementById("character-detail");
-   
     characterDetail.innerHTML = "";
     characterDetail.appendChild(createAvatarDetail(character));
     characterDetail.appendChild(createParagraph("Name: " + character.name));
     characterDetail.appendChild(createParagraph("Status: " + character.status));
     characterDetail.appendChild(createParagraph("Species: " + character.species));
-    // characterDetail.appendChild(createParagraph("Episode: " + character.episode));
-    // characterDetail.appendChild(createParagraph("Location: " + character.location));
+    characterDetail.appendChild(createParagraph("Location: " + character.location.name));
+    characterDetail.appendChild(createParagraph("Episode(s): " + character.episodeName));
+        
   };
   
   const createParagraph = (text) => {
@@ -48,32 +47,8 @@ const createCharacterRow = (character) => {
     return element;
   };
   
-const createEpisodeElement = (episode) => {
-    const element = document.createElement("div");
-    element.className = "episodes";
-    element.innerHTML = `
-      <h3>${episode.name}</h3>
-      <p><strong>Episode:</strong> ${episode.episode}</p>
-      <p><strong>Air Date:</strong> ${episode.air_date}</p>
-    `;
-    return element;
-  };
-  
-  const createLocationElement = (location) => {
-    const element = document.createElement("div");
-    element.className = "locations";
-    element.innerHTML = `
-      <h3>${location.name}</h3>
-      <p><strong>Type:</strong> ${location.type}</p>
-      <p><strong>Dimension:</strong> ${location.dimension}</p>
-    `;
-    return element;
-  };
-  
   export {
     createCharacterRow,
-    createEpisodeElement,
-    createLocationElement,
     showCharacter
   };
   
