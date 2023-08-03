@@ -171,8 +171,7 @@ console.log(longest(array3, array4, array5)); // Output: [6, 7, 8, 9]
 
 console.log("13) Ejercicio opcional 'searchInStringV1': ");
 
-const searchInStringV1 = (string, character) =>
-  Array.from(string).filter((c) => c === character).length;
+const searchInStringV1 = (str, char) => str.split(char).length - 1;
 
 const inputString = "hello world";
 const characterToSearch = "l";
