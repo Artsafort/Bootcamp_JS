@@ -1,4 +1,4 @@
-import { getAccounts, insertTransfer } from './transfer.api'; 
+import { getAccounts, createTransfer } from './transfer.api'; 
 import { mapTransferVisualModelToApi } from './transfer.mappers'; 
 import { setAccountOptions } from './transfer.helpers'; 
 import { onSetFormErrors, onSubmitForm, onUpdateField, onSetError } from '../../common/helpers';
@@ -7,15 +7,14 @@ import { history } from '../../core/router/history';
 
 console.log('transfer page');
 
-// Se define si la página está en modo de edición o no. 
+// Define si la página está en modo de edición o no. 
 const params = history.getParams();
 const isEditMode = Boolean(params.id);
 
 // Define el objeto con los campos y sus valores:
 let transfer = {
     id: ' ',
-    selectAccount: ' ', // Se agrega la propiedad sourceAccount para almacenar el ID
-    // de la cuenta desde la cual se realizará la transferencia. 
+    selectAccount: ' ', // Se agrega la propiedad selectAccount para almacenar el ID
     iban: ' ',
     name: ' ',
     amount: ' ',
@@ -27,7 +26,6 @@ let transfer = {
     email: '',
 };
 
-
 // Si la página está en modo de edición, se obtiene la lista de cuentas y establece opciones
 // en el selector "Selecciones cuenta de origen (IBAN)" con la cuenta seleccionada.
 
@@ -37,18 +35,14 @@ if (isEditMode) {
         transfer = { ...transfer, selectAccount: params.id };
     });
 } else {
-  
     // Si no está en modo de edición, se obtiene la lista de cuentas y establece opciones
     // en el selector "Selecciones cuenta de origen (IBAN)" con la primera cuenta
-
     getAccounts().then(accounts => {
-        accounts.forEach(account => {
-            const option = getOption(account);
-            select.appendChild(option);
-        });
+        setAccountOptions(accounts);
         transfer = { ...transfer, selectAccount: "1" };
     });
-};
+}
+
 // Establece los manejadores de eventos para cuando el valor de los campos cambie.
 
 onUpdateField('select-account', event => {
@@ -64,6 +58,7 @@ onUpdateField('iban', event => {
         onSetError('iban', result);
     });
 });
+
 
 onUpdateField('name', event => {
     const value = event.target.value;
@@ -130,6 +125,7 @@ onUpdateField('email', event => {
         onSetError('email', result);
     });
 });
+
 // Se establece el manejador de eventos para cuando se envíe el formulario.
 onSubmitForm('transfer-button', () => {
     formValidation.validateForm(transfer).then(result => {
@@ -137,13 +133,13 @@ onSubmitForm('transfer-button', () => {
         console.log(result); 
         console.log(transfer);
 
-        const apiTransfer = mapAccountVisualModelToApi(transfer);
+        const apiTransfer = mapTransferVisualModelToApi(transfer);
         console.log(apiTransfer);
+        
         if (result.succeeded) {
-            const apiTransfer = mapTransferVisualModelToApi(transfer); // Cambia a la función correspondiente
-            insertTransfer(apiTransfer).then(() => { history.back() }); // Volver a la página anterior en el historial
-            // del navegador. 
+            createTransfer(transfer.selectAccount).then(() => { history.back() });
         }
     });
-})
+});
+
 

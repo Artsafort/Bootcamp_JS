@@ -1856,8 +1856,11 @@ Object.defineProperty(exports, "__esModule", {
 exports.getAccounts = exports.createTransfer = void 0;
 var _axios = _interopRequireDefault(require("axios"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+// Importa la librería Axios
+
+// Define la URL de la API de cuentas utilizando una variable que está previamente definida:
 var transferUrl = "".concat("http://localhost:3000/api", "/transfer");
-var accountUrl = "".concat("http://localhost:3000/api", "/accounts");
+var accountUrl = "".concat("http://localhost:3000/api", "/account-list");
 var createTransfer = function createTransfer(id) {
   return _axios.default.post(transferUrl, {
     params: {
@@ -1868,16 +1871,24 @@ var createTransfer = function createTransfer(id) {
     data;
   });
 };
+
+// Exporta una función llamada 'getAccounts' que acepta un parámetro 'id'.
 exports.createTransfer = createTransfer;
 var getAccounts = function getAccounts(id) {
-  return _axios.default.get("".concat((accountUrl, {
-    params: {
-      id: id
-    }
-  }))).then(function (_ref2) {
-    var data = _ref2.data;
-    data[0];
-  });
+  return (
+    // Utiliza Axios para hacer una solicitud GET a la URL de cuentas.
+    _axios.default.get(accountUrl, {
+      params: {
+        id: id
+      }
+    })
+    // Cuando la solicitud es exitosa, Axios devuelve una promesa que se resuelve con una respuesta.
+    .then(function (_ref2) {
+      var data = _ref2.data;
+      // Extrae los datos de la respuesta y los devuelve como resultado.
+      return data;
+    })
+  );
 };
 exports.getAccounts = getAccounts;
 },{"axios":"../node_modules/axios/index.js"}],"pages/transfer/transfer.mappers.js":[function(require,module,exports) {
@@ -7143,7 +7154,7 @@ function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _ty
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 console.log('transfer page');
 
-// Se define si la página está en modo de edición o no. 
+// Define si la página está en modo de edición o no. 
 var params = _history.history.getParams();
 var isEditMode = Boolean(params.id);
 
@@ -7151,8 +7162,7 @@ var isEditMode = Boolean(params.id);
 var transfer = {
   id: ' ',
   selectAccount: ' ',
-  // Se agrega la propiedad sourceAccount para almacenar el ID
-  // de la cuenta desde la cual se realizará la transferencia. 
+  // Se agrega la propiedad selectAccount para almacenar el ID
   iban: ' ',
   name: ' ',
   amount: ' ',
@@ -7177,18 +7187,14 @@ if (isEditMode) {
 } else {
   // Si no está en modo de edición, se obtiene la lista de cuentas y establece opciones
   // en el selector "Selecciones cuenta de origen (IBAN)" con la primera cuenta
-
   (0, _transfer.getAccounts)().then(function (accounts) {
-    accounts.forEach(function (account) {
-      var option = getOption(account);
-      select.appendChild(option);
-    });
+    (0, _transfer3.setAccountOptions)(accounts);
     transfer = _objectSpread(_objectSpread({}, transfer), {}, {
       selectAccount: "1"
     });
   });
 }
-;
+
 // Establece los manejadores de eventos para cuando el valor de los campos cambie.
 
 (0, _helpers.onUpdateField)('select-account', function (event) {
@@ -7280,20 +7286,19 @@ if (isEditMode) {
     (0, _helpers.onSetError)('email', result);
   });
 });
+
 // Se establece el manejador de eventos para cuando se envíe el formulario.
 (0, _helpers.onSubmitForm)('transfer-button', function () {
   _transfer4.formValidation.validateForm(transfer).then(function (result) {
     (0, _helpers.onSetFormErrors)(result);
     console.log(result);
     console.log(transfer);
-    var apiTransfer = mapAccountVisualModelToApi(transfer);
+    var apiTransfer = (0, _transfer2.mapTransferVisualModelToApi)(transfer);
     console.log(apiTransfer);
     if (result.succeeded) {
-      var _apiTransfer = (0, _transfer2.mapTransferVisualModelToApi)(transfer); // Cambia a la función correspondiente
-      (0, _transfer.insertTransfer)(_apiTransfer).then(function () {
+      (0, _transfer.createTransfer)(transfer.selectAccount).then(function () {
         _history.history.back();
-      }); // Volver a la página anterior en el historial
-      // del navegador. 
+      });
     }
   });
 });
@@ -7322,7 +7327,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59679" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49911" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
