@@ -1,12 +1,12 @@
-import { getPropertyDetail, getEquipmentList, isValidContact } from "./property-detail.api";
+import { getPropertyDetail, getEquipmentList, savedData } from "./property-detail.api";
 import { mapPropertyListFromApiToViewModel } from "../property-detail/property-detail.mappers";
-import { history, routes } from '../../core/router/history';
+import { history } from '../../core/router/history';
 import { setPropertyValues } from './property-detail.helpers';
-import { setErrorMessage, onSetValues, onSubmitForm, onUpdateField } from "../../common/helpers";
-import { formValidation, createFormValidation } from "./property-detail.validations";
+import { onSubmitForm, onUpdateField, onSetError, onSetFormErrors } from "../../common/helpers";
+import { formValidation } from "./property-detail.validations";
 
 
-let submitForm = {
+let form = {
     email: '',
     message: '',
 };
@@ -29,43 +29,33 @@ console.log(params.id);
 
 onUpdateField('email', event => {
     const value = event.target.value;
-    submitForm = {
-        ...submitForm,
+    form = {
+        ...form,
         email: value,
     };
-    formValidation.validateField('email', submitForm.email).then(result => {
-        isValidContact('email', result);
+    formValidation.validateField('email', form.email).then(result => {
+        onSetError('email', result);
     });
 });
 
 onUpdateField('message', event => {
     const value = event.target.value;
-    submitForm = {
-        ...submitForm,
+    form = {
+        ...form,
         message: value,
     };
-    formValidation.validateField('message', submitForm.message).then(result => {
-        isValidContact('message', result);
+    formValidation.validateField('message', form.message).then(result => {
+        onSetError('message', result);
     });
 });
 
-// const onNavigate = isValid => {
-//     if(isValid) {
-//         history.push(routes.equipmentList);
-//     } else {
-//         alert('E-mail y/o mensaje no válidos');
-//     }
-// };
-
-
 onSubmitForm('contact-button', () => {
-createFormValidation.validateForm(submitForm).then(result => {
-    setErrorMessage(result);
+formValidation.validateForm(form).then(result => {
+    onSetFormErrors(result);
     console.log(result);
     if (result.succeeded) {
-        savedData(newProperty).then(isValid => {
+        savedData(form).then(isValid => {
             console.log({ isValid });
-            onNavigate(isValid);
         });
       };
     });

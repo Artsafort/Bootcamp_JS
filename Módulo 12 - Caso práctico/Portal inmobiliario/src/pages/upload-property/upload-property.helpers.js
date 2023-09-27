@@ -93,3 +93,16 @@ export const onAddImage = image => {
   imageContainerElement.appendChild(imageElement);
   imagesElement.insertBefore(imageContainerElement, addImageButton);
 };
+
+///////////////////////////////////////////
+
+export const addElement = (value, obj, id) => {
+  return { ...obj, [id]: [...obj [id], value] }
+};
+
+export const removeElement = (value, obj, id) => {
+  return { ...obj, [id]: obj[id].filter(el => el !== value) }
+
+//   const index = obj[id].indexOf(value);
+//   return obj[id].splice(index, 1);
+};

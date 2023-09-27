@@ -1,7 +1,3 @@
-// import { getRoomWord } from '../../common/element.helpers.js';
-
-let equipments = []; // Inicializamos la variable equipments aquí
-
 export const mapPropertyListFromApiToViewModel = (newProperty, equipmentList) => {
     return {
         mainImage: newProperty.images[0],
@@ -23,13 +19,6 @@ const getRoomWord = (rooms) => (rooms > 1 ? 'habitaciones' : 'habitación');
 const getBathroomWord = (bathrooms) => {
     return bathrooms > 1 ? 'baños' : 'baño';
 };
-const getEquipmentsName = (equipmentIds, equipmentList) => {
-    return equipmentIds
-        .map((equipmentId) => equipmentList.find((equipmentItem) => equipmentId === equipmentItem.id))
-        .map(({ name }) => name);
-};
-
-// Agregado el siguiente código para obtener los nombres de los equipos:
 function transformEquipment(newProperty, equipmentList) {
     let transformed = '';
     transformed = newProperty.equipmentIds.map(function(obj){

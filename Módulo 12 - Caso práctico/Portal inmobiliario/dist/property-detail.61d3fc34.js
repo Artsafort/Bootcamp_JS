@@ -1853,7 +1853,7 @@ module.exports = require('./lib/axios');
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isValidContact = exports.getPropertyDetail = exports.getEquipmentList = void 0;
+exports.savedData = exports.getPropertyDetail = exports.getEquipmentList = void 0;
 var _axios = _interopRequireDefault(require("axios"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var url = "".concat("http://localhost:3000/api", "/properties");
@@ -1875,12 +1875,13 @@ var getEquipmentList = function getEquipmentList() {
 // export const submitData = newProperty => 
 // Axios.post(url, newProperty).then(({ data }) => data );
 exports.getEquipmentList = getEquipmentList;
-var isValidContact = function isValidContact(submitForm) {
-  return _axios.default.post(url, submitForm).then(function (response) {
+var contactUrl = "".concat("http://localhost:3000/api", "/contact");
+var savedData = function savedData(form) {
+  return _axios.default.post(contactUrl, form).then(function (response) {
     return response.data;
   });
 };
-exports.isValidContact = isValidContact;
+exports.savedData = savedData;
 },{"axios":"../node_modules/axios/index.js"}],"pages/property-detail/property-detail.mappers.js":[function(require,module,exports) {
 "use strict";
 
@@ -1888,10 +1889,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.mapPropertyListFromApiToViewModel = void 0;
-// import { getRoomWord } from '../../common/element.helpers.js';
-
-var equipments = []; // Inicializamos la variable equipments aquí
-
 var mapPropertyListFromApiToViewModel = function mapPropertyListFromApiToViewModel(newProperty, equipmentList) {
   return {
     mainImage: newProperty.images[0],
@@ -1915,18 +1912,6 @@ var getRoomWord = function getRoomWord(rooms) {
 var getBathroomWord = function getBathroomWord(bathrooms) {
   return bathrooms > 1 ? 'baños' : 'baño';
 };
-var getEquipmentsName = function getEquipmentsName(equipmentIds, equipmentList) {
-  return equipmentIds.map(function (equipmentId) {
-    return equipmentList.find(function (equipmentItem) {
-      return equipmentId === equipmentItem.id;
-    });
-  }).map(function (_ref) {
-    var name = _ref.name;
-    return name;
-  });
-};
-
-// Agregado el siguiente código para obtener los nombres de los equipos:
 function transformEquipment(newProperty, equipmentList) {
   var transformed = '';
   transformed = newProperty.equipmentIds.map(function (obj) {
@@ -6758,7 +6743,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-var submitForm = {
+var form = {
   email: '',
   message: ''
 };
@@ -6778,41 +6763,31 @@ console.log("property detail page");
 console.log(params.id);
 (0, _helpers.onUpdateField)('email', function (event) {
   var value = event.target.value;
-  submitForm = _objectSpread(_objectSpread({}, submitForm), {}, {
+  form = _objectSpread(_objectSpread({}, form), {}, {
     email: value
   });
-  _propertyDetail4.formValidation.validateField('email', submitForm.email).then(function (result) {
-    (0, _propertyDetail.isValidContact)('email', result);
+  _propertyDetail4.formValidation.validateField('email', form.email).then(function (result) {
+    (0, _helpers.onSetError)('email', result);
   });
 });
 (0, _helpers.onUpdateField)('message', function (event) {
   var value = event.target.value;
-  submitForm = _objectSpread(_objectSpread({}, submitForm), {}, {
+  form = _objectSpread(_objectSpread({}, form), {}, {
     message: value
   });
-  _propertyDetail4.formValidation.validateField('message', submitForm.message).then(function (result) {
-    (0, _propertyDetail.isValidContact)('message', result);
+  _propertyDetail4.formValidation.validateField('message', form.message).then(function (result) {
+    (0, _helpers.onSetError)('message', result);
   });
 });
-
-// const onNavigate = isValid => {
-//     if(isValid) {
-//         history.push(routes.equipmentList);
-//     } else {
-//         alert('E-mail y/o mensaje no válidos');
-//     }
-// };
-
 (0, _helpers.onSubmitForm)('contact-button', function () {
-  _propertyDetail4.createFormValidation.validateForm(submitForm).then(function (result) {
-    (0, _helpers.setErrorMessage)(result);
+  _propertyDetail4.formValidation.validateForm(form).then(function (result) {
+    (0, _helpers.onSetFormErrors)(result);
     console.log(result);
     if (result.succeeded) {
-      savedData(newProperty).then(function (isValid) {
+      (0, _propertyDetail.savedData)(form).then(function (isValid) {
         console.log({
           isValid: isValid
         });
-        onNavigate(isValid);
       });
     }
     ;
@@ -6843,7 +6818,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50234" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58821" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
