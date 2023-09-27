@@ -130,6 +130,36 @@ onUpdateField('notes', (event) => {
 
 });
 
+onUpdateField('rooms', (event) => {
+    const value = event.target.value;
+    newProperty.rooms = value;
+
+    formValidation.validateField('rooms', newProperty.rooms).then(result => {
+        onSetError('rooms', result);
+    });
+
+});
+
+onUpdateField('bathrooms', (event) => {
+    const value = event.target.value;
+    newProperty.bathrooms = value;
+
+    formValidation.validateField('bathrooms', newProperty.bathrooms).then(result => {
+        onSetError('bathrooms', result);
+    });
+
+});
+
+onUpdateField('squareMeter', (event) => {
+    const value = event.target.value;
+    newProperty.squareMeter = value;
+
+    formValidation.validateField('squareMeter', newProperty.squareMeter).then(result => {
+        onSetError('squareMeter', result);
+    });
+
+});
+
 onUpdateField('price', (event) => {
     const value = event.target.value;
     newProperty.price = value;
@@ -158,7 +188,8 @@ onUpdateField('saleTypes', event => {
     }
     // newProperty = {
     //     ...newProperty,
-    //     saleTypes: isChecked ? addElement(newProperty.equipments, value) : removeElement(newProperty.equipments, value),
+    //     saleTypes: isChecked ? addElement(newProperty.equipments, value) : 
+    //     removeElement(newProperty.equipments, value),
     // };
 
     formValidation.validateField('saleTypes', newProperty.saleTypes).then(result => {
@@ -216,7 +247,7 @@ onUpdateField('mainFeatures', (event) => {
 onUpdateField('equipments', (event) => {
     const value = event.target.value;
     newProperty.equipments = value;
-
+    
     formValidation.validateField('equipments', newProperty.equipments).then(result => {
         onSetError('equipments', result);
     });

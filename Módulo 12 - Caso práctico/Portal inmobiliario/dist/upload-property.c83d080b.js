@@ -6966,10 +6966,11 @@ var validationSchema = {
     }],
     equipments: [{
       validator: _fonkArrayRequiredValidator.arrayRequired.validator,
-      message: 'Campo requerido'
-      // customArgs: { minLength: 1 },
+      message: 'Campo requerido',
+      customArgs: {
+        minLength: 1
+      }
     }],
-
     images: [{
       validator: _fonkArrayRequiredValidator.arrayRequired.validator,
       message: 'Campo requerido',
@@ -7121,6 +7122,27 @@ Promise.all([(0, _uploadPropertyApi.getSaleTypeList)(), (0, _uploadPropertyApi.g
     (0, _helpers.onSetError)('notes', result);
   });
 });
+(0, _helpers.onUpdateField)('rooms', function (event) {
+  var value = event.target.value;
+  newProperty.rooms = value;
+  _uploadPropertyValidations.formValidation.validateField('rooms', newProperty.rooms).then(function (result) {
+    (0, _helpers.onSetError)('rooms', result);
+  });
+});
+(0, _helpers.onUpdateField)('bathrooms', function (event) {
+  var value = event.target.value;
+  newProperty.bathrooms = value;
+  _uploadPropertyValidations.formValidation.validateField('bathrooms', newProperty.bathrooms).then(function (result) {
+    (0, _helpers.onSetError)('bathrooms', result);
+  });
+});
+(0, _helpers.onUpdateField)('squareMeter', function (event) {
+  var value = event.target.value;
+  newProperty.squareMeter = value;
+  _uploadPropertyValidations.formValidation.validateField('squareMeter', newProperty.squareMeter).then(function (result) {
+    (0, _helpers.onSetError)('squareMeter', result);
+  });
+});
 (0, _helpers.onUpdateField)('price', function (event) {
   var value = event.target.value;
   newProperty.price = value;
@@ -7145,7 +7167,8 @@ Promise.all([(0, _uploadPropertyApi.getSaleTypeList)(), (0, _uploadPropertyApi.g
   }
   // newProperty = {
   //     ...newProperty,
-  //     saleTypes: isChecked ? addElement(newProperty.equipments, value) : removeElement(newProperty.equipments, value),
+  //     saleTypes: isChecked ? addElement(newProperty.equipments, value) : 
+  //     removeElement(newProperty.equipments, value),
   // };
 
   _uploadPropertyValidations.formValidation.validateField('saleTypes', newProperty.saleTypes).then(function (result) {
