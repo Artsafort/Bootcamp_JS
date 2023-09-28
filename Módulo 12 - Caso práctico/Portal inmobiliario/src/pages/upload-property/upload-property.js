@@ -49,6 +49,7 @@ let newProperty = {
     images: [],
 };
 
+
 const addElement = (value, id) => {
     if (id === "saleTypes") {
         newProperty.saleTypes = [...newProperty.saleTypes, value];
@@ -186,12 +187,6 @@ onUpdateField('saleTypes', event => {
     } else {
         removeElement(value, 'saleTypes');
     }
-    // newProperty = {
-    //     ...newProperty,
-    //     saleTypes: isChecked ? addElement(newProperty.equipments, value) : 
-    //     removeElement(newProperty.equipments, value),
-    // };
-
     formValidation.validateField('saleTypes', newProperty.saleTypes).then(result => {
         onSetError('saleTypes', result);
     });
@@ -246,12 +241,20 @@ onUpdateField('mainFeatures', (event) => {
 
 onUpdateField('equipments', (event) => {
     const value = event.target.value;
-    newProperty.equipments = value;
+    const isChecked = event.target.checked;
     
-    formValidation.validateField('equipments', newProperty.equipments).then(result => {
-        onSetError('equipments', result);
+        if (isChecked) {
+            addElement(value, 'equipments'); // Agrega el valor al array
+        } else {
+            removeElement(value, 'equipments'); // Elimina el valor del array
+        }
+    
+        // Realiza la validación y maneja la respuesta
+        formValidation.validateField('equipments', newProperty.equipments).then(result => {
+            onSetError('equipments', result);
+        });
     });
-});
+    
 
 onUpdateField('images', (event) => {
     const value = event.target.value;

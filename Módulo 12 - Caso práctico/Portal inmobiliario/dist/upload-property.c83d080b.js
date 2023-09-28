@@ -7165,12 +7165,6 @@ Promise.all([(0, _uploadPropertyApi.getSaleTypeList)(), (0, _uploadPropertyApi.g
   } else {
     removeElement(value, 'saleTypes');
   }
-  // newProperty = {
-  //     ...newProperty,
-  //     saleTypes: isChecked ? addElement(newProperty.equipments, value) : 
-  //     removeElement(newProperty.equipments, value),
-  // };
-
   _uploadPropertyValidations.formValidation.validateField('saleTypes', newProperty.saleTypes).then(function (result) {
     (0, _helpers.onSetError)('saleTypes', result);
   });
@@ -7215,7 +7209,14 @@ Promise.all([(0, _uploadPropertyApi.getSaleTypeList)(), (0, _uploadPropertyApi.g
 });
 (0, _helpers.onUpdateField)('equipments', function (event) {
   var value = event.target.value;
-  newProperty.equipments = value;
+  var isChecked = event.target.checked;
+  if (isChecked) {
+    addElement(value, 'equipments'); // Agrega el valor al array
+  } else {
+    removeElement(value, 'equipments'); // Elimina el valor del array
+  }
+
+  // Realiza la validación y maneja la respuesta
   _uploadPropertyValidations.formValidation.validateField('equipments', newProperty.equipments).then(function (result) {
     (0, _helpers.onSetError)('equipments', result);
   });
