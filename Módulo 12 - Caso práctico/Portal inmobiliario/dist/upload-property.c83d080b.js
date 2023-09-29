@@ -6957,13 +6957,13 @@ var validationSchema = {
       validator: _fonkIsUrlValidator.isUrl.validator,
       message: 'URL no válida'
     }],
-    mainFeatures: [{
-      validator: _fonkArrayRequiredValidator.arrayRequired.validator,
-      message: 'Campo requerido',
-      customArgs: {
-        minLength: 1
-      }
-    }],
+    // mainFeatures: [
+    //     {
+    //         validator: arrayRequired.validator,
+    //         message: 'Campo requerido',
+    //         customArgs: { minLength: 1 },
+    //     },
+    // ],
     equipments: [{
       validator: _fonkArrayRequiredValidator.arrayRequired.validator,
       message: 'Campo requerido',
@@ -7068,22 +7068,22 @@ var removeElement = function removeElement(value, id) {
     }));
   }
 };
-var setEvents = function setEvents(list, ID) {
-  list.forEach(function (el) {
-    var id = (0, _uploadPropertyHelpers.formatCheckboxId)(el);
-    (0, _helpers.onUpdateField)(id, function (event) {
-      var value = event.target.value;
-      if (event.target.checked === true) {
-        addElement(value, ID);
-      } else {
-        removeElement(value, ID);
-      }
-      ;
-    });
-  });
-};
 
-// ------- PROMESAS --------
+// const setEvents = (list, ID) => {
+//     list.forEach(el => {
+//         const id = formatCheckboxId(el);
+//         onUpdateField(id, event => {
+//             const value = event.target.value;
+//             if (event.target.checked === true) {
+//                 addElement(value, ID);
+//             } else {
+//                 removeElement(value, ID);
+//             };
+//         });
+//     });
+// };
+
+// ------- PROMESAS -------- 
 
 Promise.all([(0, _uploadPropertyApi.getSaleTypeList)(), (0, _uploadPropertyApi.getProvinceList)(), (0, _uploadPropertyApi.getEquipmentList)()]).then(function (_ref) {
   var _ref2 = _slicedToArray(_ref, 3),
@@ -7094,8 +7094,8 @@ Promise.all([(0, _uploadPropertyApi.getSaleTypeList)(), (0, _uploadPropertyApi.g
   console.log(saleTypeList);
   (0, _uploadPropertyHelpers.setCheckboxList)(equipmentList, 'equipments');
   console.log(equipmentList);
-  setEvents(saleTypeList, 'saleTypes');
-  setEvents(equipmentList, 'equipments');
+  // setEvents(saleTypeList, 'saleTypes');
+  // setEvents(equipmentList, 'equipments');
   (0, _uploadPropertyHelpers.setOptionList)(provinceList, 'province');
 });
 
@@ -7200,13 +7200,16 @@ Promise.all([(0, _uploadPropertyApi.getSaleTypeList)(), (0, _uploadPropertyApi.g
     (0, _helpers.onSetError)('locationUrl', result);
   });
 });
-(0, _helpers.onUpdateField)('mainFeatures', function (event) {
-  var value = event.target.value;
-  newProperty.mainFeatures = value;
-  _uploadPropertyValidations.formValidation.validateField('mainFeatures', newProperty.mainFeatures).then(function (result) {
-    (0, _helpers.onSetError)('mainFeatures', result);
-  });
-});
+
+// onUpdateField('mainFeatures', (event) => {
+//     const value = event.target.value;
+//     newProperty.mainFeatures = value;
+
+//     formValidation.validateField('mainFeatures', newProperty.mainFeatures).then(result => {
+//         onSetError('mainFeatures', result);
+//     });
+// });
+
 (0, _helpers.onUpdateField)('equipments', function (event) {
   var value = event.target.value;
   var isChecked = event.target.checked;
@@ -7285,7 +7288,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58821" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59130" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

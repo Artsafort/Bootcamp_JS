@@ -27,15 +27,6 @@ export const mapTransferVisualModelToApi = transfer => {
       email: transfer.email
   }
 }
-/*iban: ' ',
-    name: ' ',
-    amount: ' ',
-    concept: ' ',
-    notes: ' ',
-    day: ' ',
-    month: ' ',
-    year: '',
-    email: '', */
 
 export const mapAccountApiToVisualModel = account => {
     return {

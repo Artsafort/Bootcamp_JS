@@ -72,22 +72,21 @@ const removeElement = (value, id) => {
     }
 };
 
+// const setEvents = (list, ID) => {
+//     list.forEach(el => {
+//         const id = formatCheckboxId(el);
+//         onUpdateField(id, event => {
+//             const value = event.target.value;
+//             if (event.target.checked === true) {
+//                 addElement(value, ID);
+//             } else {
+//                 removeElement(value, ID);
+//             };
+//         });
+//     });
+// };
 
-const setEvents = (list, ID) => {
-    list.forEach(el => {
-        const id = formatCheckboxId(el);
-        onUpdateField(id, event => {
-            const value = event.target.value;
-            if (event.target.checked === true) {
-                addElement(value, ID);
-            } else {
-                removeElement(value, ID);
-            };
-        });
-    });
-};
-
-// ------- PROMESAS --------
+// ------- PROMESAS -------- 
 
 Promise.all([getSaleTypeList(), getProvinceList(), getEquipmentList()]).then(
     ([saleTypeList, provinceList, equipmentList]) => {
@@ -95,8 +94,8 @@ Promise.all([getSaleTypeList(), getProvinceList(), getEquipmentList()]).then(
         console.log(saleTypeList);
         setCheckboxList(equipmentList, 'equipments');
         console.log(equipmentList);
-        setEvents(saleTypeList, 'saleTypes');
-        setEvents(equipmentList, 'equipments');
+        // setEvents(saleTypeList, 'saleTypes');
+        // setEvents(equipmentList, 'equipments');
         setOptionList(provinceList, 'province');
     }
 );
@@ -230,14 +229,14 @@ onUpdateField('locationUrl', (event) => {
     });
 });
 
-onUpdateField('mainFeatures', (event) => {
-    const value = event.target.value;
-    newProperty.mainFeatures = value;
+// onUpdateField('mainFeatures', (event) => {
+//     const value = event.target.value;
+//     newProperty.mainFeatures = value;
 
-    formValidation.validateField('mainFeatures', newProperty.mainFeatures).then(result => {
-        onSetError('mainFeatures', result);
-    });
-});
+//     formValidation.validateField('mainFeatures', newProperty.mainFeatures).then(result => {
+//         onSetError('mainFeatures', result);
+//     });
+// });
 
 onUpdateField('equipments', (event) => {
     const value = event.target.value;

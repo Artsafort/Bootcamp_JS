@@ -109,13 +109,13 @@ const validationSchema = {
                 message: 'URL no válida',
             },
         ],
-        mainFeatures: [
-            {
-                validator: arrayRequired.validator,
-                message: 'Campo requerido',
-                customArgs: { minLength: 1 },
-            },
-        ],
+        // mainFeatures: [
+        //     {
+        //         validator: arrayRequired.validator,
+        //         message: 'Campo requerido',
+        //         customArgs: { minLength: 1 },
+        //     },
+        // ],
         equipments: [
             {
                 validator: arrayRequired.validator,
