@@ -109,20 +109,6 @@ const validationSchema = {
                 message: 'URL no válida',
             },
         ],
-        // mainFeatures: [
-        //     {
-        //         validator: arrayRequired.validator,
-        //         message: 'Campo requerido',
-        //         customArgs: { minLength: 1 },
-        //     },
-        // ],
-        equipments: [
-            {
-                validator: arrayRequired.validator,
-                message: 'Campo requerido',
-                customArgs: { minLength: 1 },
-            },
-        ],
         images: [
             {
                 validator: arrayRequired.validator,
@@ -142,19 +128,3 @@ const validationSchema = {
 export const formValidation = createFormValidation(validationSchema);
 
 
-    // title: '',
-    // notes: '',
-    // email: '',
-    // phone: '',
-    // price: '',
-    // saleTypes: [],
-    // address: '',
-    // city: '',
-    // province: '',
-    // squareMeter: '',
-    // rooms: '',
-    // bathrooms: '',
-    // locationUrl: '',
-    // mainFeatures: '',
-    // equipments: '', 
-    // images: '',

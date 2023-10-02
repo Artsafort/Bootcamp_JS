@@ -51,26 +51,40 @@ let newProperty = {
 
 
 const addElement = (value, id) => {
-    if (id === "saleTypes") {
-        newProperty.saleTypes = [...newProperty.saleTypes, value];
-    } else if (id === 'equipments') {
-        if (!Array.isArray(newProperty.equipments)) {
-            newProperty.equipments = [];
-        }
-        newProperty.equipments = [...newProperty.equipments, value];
-    }
+    // if (id === 'saleTypes') {
+    //     newProperty.saleTypes = [...newProperty.saleTypes, value];
+    // } else if (id === 'equipments') {
+    //     if (!Array.isArray(newProperty.equipments)) {
+    //         newProperty.equipments = [];
+    //     }
+    //     newProperty.equipments = [...newProperty.equipments, value];
+    //     return newProperty;
+    // };
+    newProperty[ id ] = [...newProperty[ id ], value];
+    return newProperty;
 };
 
 const removeElement = (value, id) => {
-    if (id === "saleTypes") {
+    if (id === 'saleTypes') {
         newProperty.saleTypes = [...newProperty.saleTypes.filter(item => item !== value)];
     } else if (id === 'equipments') {
         if (!Array.isArray(newProperty.equipments)) {
             newProperty.equipments = [];
         }
         newProperty.equipments = [...newProperty.equipments.filter(item => item !== value)];
+        return newProperty;
     }
+    // if (id === 'saleTypes') {
+    //     newProperty.saleTypes = [...newProperty.saleTypes.filter(item => item !== value)];
+    // } else if (id === 'equipments') {
+    //     if (!Array.isArray(newProperty.equipments)) {
+    //         newProperty.equipments = [];
+    //     }
+
+    // newProperty[ id ] = [...newProperty[ id ].filter(item => item !== value), value];
+    // return newProperty;
 };
+
 
 // const setEvents = (list, ID) => {
 //     list.forEach(el => {
@@ -229,14 +243,14 @@ onUpdateField('locationUrl', (event) => {
     });
 });
 
-// onUpdateField('mainFeatures', (event) => {
-//     const value = event.target.value;
-//     newProperty.mainFeatures = value;
+onUpdateField('mainFeatures', (event) => {
+    const value = event.target.value;
+    newProperty.mainFeatures = value;
 
-//     formValidation.validateField('mainFeatures', newProperty.mainFeatures).then(result => {
-//         onSetError('mainFeatures', result);
-//     });
-// });
+    formValidation.validateField('mainFeatures', newProperty.mainFeatures).then(result => {
+        onSetError('mainFeatures', result);
+    });
+});
 
 onUpdateField('equipments', (event) => {
     const value = event.target.value;
@@ -267,15 +281,26 @@ onUpdateField('images', (event) => {
 onSubmitForm('insert-feature-button', () => {
     const value = document.getElementById('newFeature').value;
     if (value) {
+        // 1. Obtén el ID del botón de eliminación basado en el valor de la característica.
         const deleteId = formatDeleteFeatureButtonId(value);
-        newProperty = addElement(value, newProperty, 'mainFeatures');
+
+        // 2. Agrega la característica al objeto newProperty.
+        newProperty = addElement(value, 'mainFeatures');
+
+        // 3. Agrega la característica a la interfaz de usuario.
         onAddFeature(value);
+
+        // 4. Establece un manejador para el botón de eliminación.
         onSubmitForm(deleteId, () => {
+            // 5. Elimina la característica del objeto newProperty.
+            newProperty = removeElement(value, 'mainFeatures');
+
+            // 6. Elimina la característica de la interfaz de usuario.
             onRemoveFeature(value);
-            removeElement(value, newProperty, 'mainFeatures');
         });
     }
 });
+
 
 onAddFile('add-image', value => {
     onAddImage(value);
@@ -285,15 +310,26 @@ onAddFile('add-image', value => {
 // GUARDAR EL FORMULARIO:
 
 onSubmitForm('save-button', () => {
+    // 1. Valida el formulario utilizando formValidation.
     formValidation.validateForm(newProperty).then(result => {
+        // 2. Establece los errores del formulario en la interfaz de usuario.
         onSetFormErrors(result);
+
+        // 3. Convierte el objeto newProperty en un formato adecuado para la API.
         const apiNewProperty = mapPropertyListFromViewModelToApi(newProperty);
+
+        // 4. Muestra información de depuración en la consola.
         console.log(newProperty);
         console.log(apiNewProperty);
+
+        // 5. Si la validación del formulario es exitosa.
         if (result.succeeded) {
+            // 6. Inserta la propiedad utilizando la función insertProperty de la API.
             insertProperty(apiNewProperty).then(() => {
-                history.back();
+                // 7. Navega hacia atrás en la historia del navegador.
+                // history.back();
             });
         }
     });
 });
+

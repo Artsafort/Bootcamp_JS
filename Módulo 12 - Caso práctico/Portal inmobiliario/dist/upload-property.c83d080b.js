@@ -6957,20 +6957,6 @@ var validationSchema = {
       validator: _fonkIsUrlValidator.isUrl.validator,
       message: 'URL no válida'
     }],
-    // mainFeatures: [
-    //     {
-    //         validator: arrayRequired.validator,
-    //         message: 'Campo requerido',
-    //         customArgs: { minLength: 1 },
-    //     },
-    // ],
-    equipments: [{
-      validator: _fonkArrayRequiredValidator.arrayRequired.validator,
-      message: 'Campo requerido',
-      customArgs: {
-        minLength: 1
-      }
-    }],
     images: [{
       validator: _fonkArrayRequiredValidator.arrayRequired.validator,
       message: 'Campo requerido',
@@ -6985,23 +6971,6 @@ var validationSchema = {
   }
 };
 var formValidation = (0, _fonk.createFormValidation)(validationSchema);
-
-// title: '',
-// notes: '',
-// email: '',
-// phone: '',
-// price: '',
-// saleTypes: [],
-// address: '',
-// city: '',
-// province: '',
-// squareMeter: '',
-// rooms: '',
-// bathrooms: '',
-// locationUrl: '',
-// mainFeatures: '',
-// equipments: '', 
-// images: '',
 exports.formValidation = formValidation;
 },{"@lemoncode/fonk":"../node_modules/@lemoncode/fonk/dist/@lemoncode/fonk.esm.js","@lemoncode/fonk-array-required-validator":"../node_modules/@lemoncode/fonk-array-required-validator/dist/@lemoncode/fonk-array-required-validator.esm.js","@lemoncode/fonk-positive-number-validator":"../node_modules/@lemoncode/fonk-positive-number-validator/dist/@lemoncode/fonk-positive-number-validator.esm.js","@lemoncode/fonk-is-url-validator":"../node_modules/@lemoncode/fonk-is-url-validator/dist/@lemoncode/fonk-is-url-validator.esm.js"}],"pages/upload-property/upload-property.js":[function(require,module,exports) {
 "use strict";
@@ -7045,17 +7014,20 @@ var newProperty = {
   images: []
 };
 var addElement = function addElement(value, id) {
-  if (id === "saleTypes") {
-    newProperty.saleTypes = [].concat(_toConsumableArray(newProperty.saleTypes), [value]);
-  } else if (id === 'equipments') {
-    if (!Array.isArray(newProperty.equipments)) {
-      newProperty.equipments = [];
-    }
-    newProperty.equipments = [].concat(_toConsumableArray(newProperty.equipments), [value]);
-  }
+  // if (id === 'saleTypes') {
+  //     newProperty.saleTypes = [...newProperty.saleTypes, value];
+  // } else if (id === 'equipments') {
+  //     if (!Array.isArray(newProperty.equipments)) {
+  //         newProperty.equipments = [];
+  //     }
+  //     newProperty.equipments = [...newProperty.equipments, value];
+  //     return newProperty;
+  // };
+  newProperty[id] = [].concat(_toConsumableArray(newProperty[id]), [value]);
+  return newProperty;
 };
 var removeElement = function removeElement(value, id) {
-  if (id === "saleTypes") {
+  if (id === 'saleTypes') {
     newProperty.saleTypes = _toConsumableArray(newProperty.saleTypes.filter(function (item) {
       return item !== value;
     }));
@@ -7066,7 +7038,17 @@ var removeElement = function removeElement(value, id) {
     newProperty.equipments = _toConsumableArray(newProperty.equipments.filter(function (item) {
       return item !== value;
     }));
+    return newProperty;
   }
+  // if (id === 'saleTypes') {
+  //     newProperty.saleTypes = [...newProperty.saleTypes.filter(item => item !== value)];
+  // } else if (id === 'equipments') {
+  //     if (!Array.isArray(newProperty.equipments)) {
+  //         newProperty.equipments = [];
+  //     }
+
+  // newProperty[ id ] = [...newProperty[ id ].filter(item => item !== value), value];
+  // return newProperty;
 };
 
 // const setEvents = (list, ID) => {
@@ -7200,16 +7182,13 @@ Promise.all([(0, _uploadPropertyApi.getSaleTypeList)(), (0, _uploadPropertyApi.g
     (0, _helpers.onSetError)('locationUrl', result);
   });
 });
-
-// onUpdateField('mainFeatures', (event) => {
-//     const value = event.target.value;
-//     newProperty.mainFeatures = value;
-
-//     formValidation.validateField('mainFeatures', newProperty.mainFeatures).then(result => {
-//         onSetError('mainFeatures', result);
-//     });
-// });
-
+(0, _helpers.onUpdateField)('mainFeatures', function (event) {
+  var value = event.target.value;
+  newProperty.mainFeatures = value;
+  _uploadPropertyValidations.formValidation.validateField('mainFeatures', newProperty.mainFeatures).then(function (result) {
+    (0, _helpers.onSetError)('mainFeatures', result);
+  });
+});
 (0, _helpers.onUpdateField)('equipments', function (event) {
   var value = event.target.value;
   var isChecked = event.target.checked;
@@ -7234,12 +7213,22 @@ Promise.all([(0, _uploadPropertyApi.getSaleTypeList)(), (0, _uploadPropertyApi.g
 (0, _helpers.onSubmitForm)('insert-feature-button', function () {
   var value = document.getElementById('newFeature').value;
   if (value) {
+    // 1. Obtén el ID del botón de eliminación basado en el valor de la característica.
     var deleteId = (0, _uploadPropertyHelpers.formatDeleteFeatureButtonId)(value);
-    newProperty = addElement(value, newProperty, 'mainFeatures');
+
+    // 2. Agrega la característica al objeto newProperty.
+    newProperty = addElement(value, 'mainFeatures');
+
+    // 3. Agrega la característica a la interfaz de usuario.
     (0, _uploadPropertyHelpers.onAddFeature)(value);
+
+    // 4. Establece un manejador para el botón de eliminación.
     (0, _helpers.onSubmitForm)(deleteId, function () {
+      // 5. Elimina la característica del objeto newProperty.
+      newProperty = removeElement(value, 'mainFeatures');
+
+      // 6. Elimina la característica de la interfaz de usuario.
       (0, _uploadPropertyHelpers.onRemoveFeature)(value);
-      removeElement(value, newProperty, 'mainFeatures');
     });
   }
 });
@@ -7251,14 +7240,24 @@ Promise.all([(0, _uploadPropertyApi.getSaleTypeList)(), (0, _uploadPropertyApi.g
 // GUARDAR EL FORMULARIO:
 
 (0, _helpers.onSubmitForm)('save-button', function () {
+  // 1. Valida el formulario utilizando formValidation.
   _uploadPropertyValidations.formValidation.validateForm(newProperty).then(function (result) {
+    // 2. Establece los errores del formulario en la interfaz de usuario.
     (0, _helpers.onSetFormErrors)(result);
+
+    // 3. Convierte el objeto newProperty en un formato adecuado para la API.
     var apiNewProperty = (0, _uploadProperty.mapPropertyListFromViewModelToApi)(newProperty);
+
+    // 4. Muestra información de depuración en la consola.
     console.log(newProperty);
     console.log(apiNewProperty);
+
+    // 5. Si la validación del formulario es exitosa.
     if (result.succeeded) {
+      // 6. Inserta la propiedad utilizando la función insertProperty de la API.
       (0, _uploadPropertyApi.insertProperty)(apiNewProperty).then(function () {
-        _history.history.back();
+        // 7. Navega hacia atrás en la historia del navegador.
+        // history.back();
       });
     }
   });
