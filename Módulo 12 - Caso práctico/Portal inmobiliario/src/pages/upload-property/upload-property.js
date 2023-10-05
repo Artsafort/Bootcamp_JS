@@ -269,14 +269,26 @@ onUpdateField('equipments', (event) => {
     });
     
 
-onUpdateField('images', (event) => {
-    const value = event.target.value;
-    newProperty.images = value;
+// onUpdateField('images', (event) => {
+//     const value = event.target.value;
+//     newProperty.images = value;
 
-    formValidation.validateField('images', newProperty.images).then(result => {
-        onSetError('images', result);
+//     formValidation.validateField('images', newProperty.images).then(result => {
+//         onSetError('images', result);
+//     });
+// });
+
+onUpdateField('images', () => {
+    onAddFile('add-image', (photoFile) => {
+      onAddImage(photoFile);
+      newProperty.images = [...newProperty.images, photoFile];
+      formValidation
+        .validateField('images', newProperty.images)
+        .then((result) => {
+          onSetError('images', result);
+        });
     });
-});
+  });
 
 onSubmitForm('insert-feature-button', () => {
     const value = document.getElementById('newFeature').value;

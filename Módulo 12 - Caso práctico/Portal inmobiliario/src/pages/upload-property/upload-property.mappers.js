@@ -1,21 +1,21 @@
-export const mapPropertyListFromViewModelToApi = newProperty => {
+export const mapPropertyListFromViewModelToApi = property => {
     return {
-        title: newProperty.title,
-        notes: newProperty.notes,
-        email: newProperty.email,
-        phone: newProperty.phone,
-        price: parseFloat(newProperty.price),
-        saleTypes: newProperty.saleTypes,
-        address: newProperty.address,
-        city: newProperty.city,
-        province: newProperty.province,
-        squareMeter: parseFloat(newProperty.squareMeter),
-        rooms: newProperty.rooms,
-        bathrooms: parseInt(newProperty.bathrooms),
-        locationUrl: newProperty.locationUrl,
-        mainFeatures: newProperty.mainFeatures,
-        equipments: newProperty.equipments,
-        images: newProperty.images,
+        title: property.title,
+        notes: property.notes,
+        email: property.email,
+        phone: property.phone,
+        price: parseFloat(property.price),
+        saleTypesIds: property.saleTypes,
+        address: property.address,
+        city: property.city,
+        provinceId: property.province,
+        squareMeter: parseFloat(property.squareMeter),
+        rooms: property.rooms,
+        bathrooms: parseInt(property.bathrooms),
+        locationUrl: property.locationUrl,
+        mainFeatures: property.mainFeatures,
+        equipmentsIds: property.equipments,
+        images: property.images,
     };
 };
 
