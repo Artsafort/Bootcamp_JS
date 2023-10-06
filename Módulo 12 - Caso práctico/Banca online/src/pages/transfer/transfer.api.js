@@ -5,7 +5,7 @@ import Axios from 'axios';
 const transferUrl = `${process.env.BASE_API_URL}/transfer`;
 const accountUrl = `${process.env.BASE_API_URL}/account-list`;
 
-export const createTransfer = id => Axios.post(transferUrl, { params: { accountId: id}}).then(({ data }) => { data });
+export const createTransfer = transfer => Axios.post(transferUrl, transfer).then(({ data }) => { data });
 
 // Exporta una función llamada 'getAccounts' que acepta un parámetro 'id'.
 export const getAccounts = (id) =>

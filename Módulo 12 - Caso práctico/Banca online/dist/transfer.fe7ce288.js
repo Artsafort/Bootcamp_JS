@@ -1861,12 +1861,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // Define la URL de la API de cuentas utilizando una variable que está previamente definida:
 var transferUrl = "".concat("http://localhost:3000/api", "/transfer");
 var accountUrl = "".concat("http://localhost:3000/api", "/account-list");
-var createTransfer = function createTransfer(id) {
-  return _axios.default.post(transferUrl, {
-    params: {
-      accountId: id
-    }
-  }).then(function (_ref) {
+var createTransfer = function createTransfer(transfer) {
+  return _axios.default.post(transferUrl, transfer).then(function (_ref) {
     var data = _ref.data;
     data;
   });
@@ -1938,6 +1934,24 @@ var mapAccountApiToVisualModel = function mapAccountApiToVisualModel(account) {
     alias: account.name
   };
 };
+
+// export const mapAccountFromApiToViewModel = account => {
+//   return {
+//       ...account,
+//       alias: account.name,
+//       };
+//   };
+
+// export const mapAccountListFromApiToViewModel = accountList => {
+//   return accountList.map(account => mapAccountFromApiToViewModel(account));
+// };
+
+//   export const mapAccountFromtViewModelToApi = account => {
+//       return {
+//           ...account,
+//           name: account.alias,
+//       };
+//   };
 exports.mapAccountApiToVisualModel = mapAccountApiToVisualModel;
 },{}],"pages/transfer/transfer.helpers.js":[function(require,module,exports) {
 "use strict";
@@ -7287,7 +7301,7 @@ if (isEditMode) {
     var apiTransfer = (0, _transfer2.mapTransferVisualModelToApi)(transfer);
     console.log(apiTransfer);
     if (result.succeeded) {
-      (0, _transfer.createTransfer)(transfer.selectAccount).then(function () {
+      (0, _transfer.createTransfer)(transfer).then(function () {
         _history.history.back();
       });
     }
@@ -7318,7 +7332,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55159" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63005" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

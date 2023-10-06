@@ -133,5 +133,20 @@
       "accountId": "3"
     }
   ],
-  "transfer": []
+  "transfer": [
+    {
+      "id": " ",
+      "selectAccount": "2",
+      "iban": "ES0200494596912190057511",
+      "name": "Artin",
+      "amount": "10",
+      "concept": "Mañana",
+      "notes": "Ok",
+      "day": "03",
+      "month": "11",
+      "year": "2023",
+      "email": "artinsafarian@live.com",
+      "date": "2023-11-03"
+    }
+  ]
 }

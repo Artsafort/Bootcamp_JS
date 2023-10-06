@@ -137,7 +137,7 @@ onSubmitForm('transfer-button', () => {
         console.log(apiTransfer);
         
         if (result.succeeded) {
-            createTransfer(transfer.selectAccount).then(() => { history.back() });
+            createTransfer(transfer).then(() => { history.back() });
         }
     });
 });
