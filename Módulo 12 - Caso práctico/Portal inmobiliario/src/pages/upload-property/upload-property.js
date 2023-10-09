@@ -66,25 +66,16 @@ const addElement = (value, id) => {
 
 const removeElement = (value, id) => {
     if (id === 'saleTypes') {
-        newProperty.saleTypes = [...newProperty.saleTypes.filter(item => item !== value)];
+      newProperty.saleTypes = [
+        ...newProperty.saleTypes.filter((item) => item !== value),
+      ];
     } else if (id === 'equipments') {
-        if (!Array.isArray(newProperty.equipments)) {
-            newProperty.equipments = [];
-        }
-        newProperty.equipments = [...newProperty.equipments.filter(item => item !== value)];
-        return newProperty;
+      newProperty.equipments = [
+        ...newProperty.equipments.filter((item) => item !== value),
+      ];
     }
-    // if (id === 'saleTypes') {
-    //     newProperty.saleTypes = [...newProperty.saleTypes.filter(item => item !== value)];
-    // } else if (id === 'equipments') {
-    //     if (!Array.isArray(newProperty.equipments)) {
-    //         newProperty.equipments = [];
-    //     }
-
-    // newProperty[ id ] = [...newProperty[ id ].filter(item => item !== value), value];
-    // return newProperty;
-};
-
+    return newProperty;
+  };
 
 // const setEvents = (list, ID) => {
 //     list.forEach(el => {
